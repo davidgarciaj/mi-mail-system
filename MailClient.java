@@ -35,7 +35,7 @@ public class MailClient
     public void printNextMailItem(){
         MailItem correo = getNextMailItem();
         if(correo != null){
-            System.out.println(correo);
+            correo.print();
         }
         else{
             System.out.println("No hay mas correos en tu bandeja.");
