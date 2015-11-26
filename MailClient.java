@@ -17,7 +17,7 @@ public class MailClient
      */
     public MailClient(MailServer correo, String name)
     {
-        MailServer server = new MailServer();
+        server =correo;
         user = name;
     }
     
