@@ -29,7 +29,6 @@ public class MailClient
      */
     public MailItem getNextMailItem(){
         lastEmail = server.getNextMailItem(user);
-        server.post(lastEmail);
         return lastEmail;
     
     }
@@ -37,7 +36,7 @@ public class MailClient
     /**
      * Método que indica cuantos email tenemos en el servidor
      */
-    public void emailList(){
+    public void cuantosEmailTenemosEnElServidor(){
         int emails = server.howManyMailItems(user);
         if(emails != 0){
             if(emails == 1){
