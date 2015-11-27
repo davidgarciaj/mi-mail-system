@@ -70,10 +70,13 @@ public class MailClient
      */
     public MailItem getNextMailItemAndAutorespond(){
         MailItem enviado = server.getNextMailItem(user);
-        sendMailItem(enviado.getFrom(), "RE:" + enviado.getSubject(),
+        if(enviado != null){
+            sendMailItem(enviado.getFrom(), "RE:" + enviado.getSubject(),
                     "Estamos de vacaciones, lo sentimos mucho.\n" + 
                     "#############################################\n" + 
                     enviado.getMessage());
+        }
+        
         
         return enviado ;
     }
