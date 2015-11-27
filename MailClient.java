@@ -64,4 +64,17 @@ public class MailClient
         MailItem cuenta = new MailItem(user , paraQuien , mensaje, subject);
         server.post(cuenta);
     }
+    
+    /**
+     * Método para obtener el siguiente email y poder responde.
+     */
+    public MailItem getNextMailItemAndAutorespond(){
+        MailItem enviado = server.getNextMailItem(user);
+        sendMailItem(enviado.getFrom(), "RE:" + enviado.getSubject(),
+                    "Estamos de vacaciones, lo sentimos mucho.\n" + 
+                    "#############################################\n" + 
+                    enviado.getMessage());
+        
+        return enviado ;
+    }
 }
