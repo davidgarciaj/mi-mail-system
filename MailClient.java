@@ -11,6 +11,8 @@ public class MailClient
     private MailServer server;
     //La dirección email del usuario de este servidor
     private String user;
+    //Último mensaje recivido
+    private MailItem lastEmail;
 
     /**
      * Constructor for objects of class MailClient
@@ -19,13 +21,16 @@ public class MailClient
     {
         this.server = server;
         this.user = user;
+        lastEmail = null;
     }
     
     /**
      * Método para obtener el siguiente email.
      */
     public MailItem getNextMailItem(){
-        return server.getNextMailItem(user);
+        lastEmail = server.getNextMailItem(user);
+        server.post(lastEmail);
+        return lastEmail;
     
     }
     
@@ -69,15 +74,25 @@ public class MailClient
      * Método para obtener el siguiente email y poder responde.
      */
     public MailItem getNextMailItemAndAutorespond(){
-        MailItem enviado = server.getNextMailItem(user);
+        MailItem enviado = getNextMailItem();
         if(enviado != null){
             sendMailItem(enviado.getFrom(), "RE:" + enviado.getSubject(),
                     "Estamos de vacaciones, lo sentimos mucho.\n" + 
                     "#############################################\n" + 
                     enviado.getMessage());
-        }
-        
-        
+        }        
         return enviado ;
+    }
+    
+    /**
+     * Imprime el último mensaje recivido.
+     */
+    public void printLastEmail(){
+        if(lastEmail != null){
+             lastEmail.print();
+        }
+        else{
+            System.out.println("No hay mensajes disponibles");
+        }
     }
 }
