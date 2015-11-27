@@ -30,6 +30,21 @@ public class MailClient
     }
     
     /**
+     * Método que indica cuantos email tenemos en el servidor
+     */
+    public void emailList(){
+        int emails = server.howManyMailItems(user);
+        if(emails != 0){
+            if(emails == 1){
+                System.out.println("Actualmente tienes " + emails + " email.");
+            }
+        }
+        else{
+            System.out.println("No hay mas correos en tu bandeja.");
+        }
+    }
+    
+    /**
      * Método para ver el siguiente email.
      */
     public void printNextMailItem(){
