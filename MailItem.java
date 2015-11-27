@@ -17,11 +17,11 @@ public class MailItem
     /**
      * Constructor for objects of class MailItem
      */
-    public MailItem(String who, String send, String envia)
+    public MailItem(String from, String to, String message)
     {
-        from = who;
-        to = send;
-        message = envia;
+        this.from = from;
+        this.to = to;
+        this.message = message;
     }
 
     /**
@@ -49,8 +49,8 @@ public class MailItem
      * Imprime en pantalla de quien, para quien y cual es el mensaje.
      */
     public void print(){
-        System.out.println("From: " + from);
+        System.out.println("To: " + to);
         System.out.println(message);
-        System.out.println("To: " + to + " with love.");
+        System.out.println("From: " + from + " with love.");
     }
 }
