@@ -28,8 +28,12 @@ public class MailClient
      * Método para obtener el siguiente email.
      */
     public MailItem getNextMailItem(){
-        lastEmail = server.getNextMailItem(user);
-        return lastEmail;
+        MailItem correo = null;
+        if(server.howManyMailItems(user) > 0){
+            lastEmail = server.getNextMailItem(user);
+            correo = lastEmail;
+        }        
+        return correo;
     
     }
     
