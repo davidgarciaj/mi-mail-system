@@ -13,15 +13,18 @@ public class MailItem
     private String to;
     // Contiene el texto del mensaje
     private String message;
+    //Indica el motivo por el que se ha escrito el mensaje
+    private String subject;
 
     /**
      * Constructor for objects of class MailItem
      */
-    public MailItem(String from, String to, String message)
+    public MailItem(String from, String to, String message, String subject)
     {
         this.from = from;
         this.to = to;
         this.message = message;
+        this.subject = subject;
     }
 
     /**
@@ -46,10 +49,18 @@ public class MailItem
     }
     
     /**
+     *  Dice el asunto del mensaje.
+     */
+    public String getSubject(){
+        return subject;
+    }
+    
+    /**
      * Imprime en pantalla de quien, para quien y cual es el mensaje.
      */
     public void print(){
         System.out.println("To: " + to);
+        System.out.println("Subject: " + subject);
         System.out.println(message);
         System.out.println("From: " + from + " with love.");
     }

@@ -45,8 +45,8 @@ public class MailClient
     /**
      * Enviar un mensaje a otro cliente.
      */
-    public void sendMailItem(String paraQuien , String mensaje){
-        MailItem cuenta = new MailItem(user , paraQuien , mensaje);
+    public void sendMailItem(String paraQuien ,String subject , String mensaje){
+        MailItem cuenta = new MailItem(user , paraQuien , mensaje, subject);
         server.post(cuenta);
     }
 }
