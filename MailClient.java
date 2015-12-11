@@ -13,6 +13,8 @@ public class MailClient
     private String user;
     //Último mensaje recivido
     private MailItem lastEmail;
+    //Determina si el último MailItem que te han enviado es spam.
+    private boolean spam;
 
     /**
      * Constructor for objects of class MailClient
@@ -22,6 +24,7 @@ public class MailClient
         this.server = server;
         this.user = user;
         lastEmail = null;
+        spam = false;
     }
     
     /**
@@ -31,7 +34,17 @@ public class MailClient
         MailItem correo = null;
         if(server.howManyMailItems(user) > 0){
             lastEmail = server.getNextMailItem(user);
-            correo = lastEmail;
+            String mensage = lastEmail.getMessage();
+            if(mensage.contains("trabajo")){
+                correo = lastEmail;                
+            }
+            else if(mensage.contains("regalo") || mensage.contains("promocion")){
+                spam = true;
+                correo = null;
+            }
+            else{
+                correo = lastEmail;
+            }
         }        
         return correo;
     
@@ -58,10 +71,16 @@ public class MailClient
     public void printNextMailItem(){
         MailItem correo = getNextMailItem();
         if(correo != null){
-            correo.print();
+             correo.print();
+           
         }
         else{
-            System.out.println("No hay mas correos en tu bandeja.");
+            if(spam){
+                 System.out.println("El último email recivido es un spam.");
+            }
+            else{
+                System.out.println("No hay mas correos en tu bandeja.");
+            }
         }
     }
     
