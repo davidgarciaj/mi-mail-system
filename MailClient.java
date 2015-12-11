@@ -15,6 +15,15 @@ public class MailClient
     private MailItem lastEmail;
     //Determina si el último MailItem que te han enviado es spam.
     private boolean spam;
+    //El email recivido mas largo.
+    private MailItem mostLargeMail;
+    //Contador de mensajes enviados.
+    private int howManyMailSend;
+    //Contador de mensajes recividos.
+    private int howManyMailHave;
+    //Contador de mensajes spam.
+    private int howManyMailSpam;
+    
 
     /**
      * Constructor for objects of class MailClient
@@ -25,6 +34,10 @@ public class MailClient
         this.user = user;
         lastEmail = null;
         spam = false;
+        mostLargeMail = null;
+        howManyMailSend = 0;
+        howManyMailHave = 0;
+        howManyMailSpam = 0;
     }
     
     /**
@@ -34,13 +47,24 @@ public class MailClient
         MailItem correo = null;
         if(server.howManyMailItems(user) > 0){
             lastEmail = server.getNextMailItem(user);
-            String mensage = lastEmail.getMessage();
-            if(mensage.contains("trabajo")){
+            String mensaje = lastEmail.getMessage();
+            howManyMailHave++;
+            if(mostLargeMail != null){
+                String largeMail = mostLargeMail.getMessage();
+                if(mensaje.length() > largeMail.length()){
+                    mostLargeMail = lastEmail;
+                }
+            }
+            else{
+                 mostLargeMail = lastEmail;
+            }
+            if(mensaje.contains("trabajo")){
                 correo = lastEmail;                
             }
-            else if(mensage.contains("regalo") || mensage.contains("promocion")){
+            else if(mensaje.contains("regalo") || mensaje.contains("promocion")){
                 spam = true;
                 correo = null;
+                howManyMailSpam++;
             }
             else{
                 correo = lastEmail;
@@ -90,6 +114,7 @@ public class MailClient
     public void sendMailItem(String paraQuien ,String subject , String mensaje){
         MailItem cuenta = new MailItem(user , paraQuien , mensaje, subject);
         server.post(cuenta);
+        howManyMailSend++;
     }
     
     /**
@@ -102,6 +127,7 @@ public class MailClient
                     "Estamos de vacaciones, lo sentimos mucho.\n" + 
                     "#############################################\n" + 
                     enviado.getMessage());
+                    howManyMailSend++;
         }        
         return enviado ;
     }
@@ -116,5 +142,32 @@ public class MailClient
         else{
             System.out.println("No hay mensajes disponibles");
         }
+    }
+    
+    /**
+     * Muestra el número de mensajes enviados recividos y spam,
+     * el porcentaje de spam que recives y quien te envio el
+     * mensaje mas largo y de cuantos carazteres lo envio.
+     */
+    public void showStats(){
+         int porcentaje;
+         if(mostLargeMail != null){
+             porcentaje = (howManyMailSpam * 100)/howManyMailHave;
+         }
+         else{
+             porcentaje = 0;
+         }
+         System.out.println("Mensajes enviados: " + howManyMailSend);
+         System.out.println("Mensajes recividos: " + howManyMailHave);
+         System.out.println("Mensajes que son spam: " + howManyMailSpam);
+         System.out.println("Porcentaje de spam: " + porcentaje + "%");
+         if(mostLargeMail != null){   
+            String largeMail = mostLargeMail.getMessage();
+            System.out.println("El Mensaje más largo a sido de " + mostLargeMail.getFrom() 
+                            + " y fue de " + largeMail.length() + " carácteres.");
+         }
+         else{
+             System.out.println("No has recibido ningún mensaje");
+         }
     }
 }
