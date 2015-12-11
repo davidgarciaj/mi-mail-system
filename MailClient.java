@@ -17,6 +17,8 @@ public class MailClient
     private boolean spam;
     //El email recivido mas largo.
     private MailItem mostLargeMail;
+    //El útimo spam.
+    private MailItem lastSpam;
     //Contador de mensajes enviados.
     private int howManyMailSend;
     //Contador de mensajes recividos.
@@ -35,6 +37,7 @@ public class MailClient
         lastEmail = null;
         spam = false;
         mostLargeMail = null;
+        lastSpam = null;
         howManyMailSend = 0;
         howManyMailHave = 0;
         howManyMailSpam = 0;
@@ -65,6 +68,7 @@ public class MailClient
                 spam = true;
                 correo = null;
                 howManyMailSpam++;
+                lastSpam = lastEmail;
             }
             else{
                 correo = lastEmail;
@@ -169,5 +173,16 @@ public class MailClient
          else{
              System.out.println("No has recibido ningún mensaje");
          }
+    }
+    /**
+     * Muestra el último MailItem spam que has recivido
+     */
+    public void showInfoLastSpam(){
+        if(lastSpam != null){
+            lastSpam.print();
+        }
+        else{
+            System.out.println("No has recivido ningún email que sea spam");
+        }
     }
 }
